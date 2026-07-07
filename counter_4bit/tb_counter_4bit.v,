@@ -1,0 +1,31 @@
+`timescale 1ns/1ps
+
+module tb_counter_4bit;
+    reg clk, reset;
+    wire [3:0] count;
+
+    counter_4bit uut(
+        .clk(clk),
+        .reset(reset),
+        .count(count)
+    );
+
+    // Clock — 10ns period
+    initial clk = 0;
+    always #5 clk = ~clk;
+
+    initial begin
+        // Reset first
+        reset = 1; #20;
+        reset = 0;
+
+        // Count for 20 clock cycles
+        #200;
+        $finish;
+    end
+
+    initial begin
+        $monitor("time=%0t reset=%b count=%0d", $time, reset, count);
+    end
+
+endmodule
